@@ -1,0 +1,818 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Forsaken GameCenter</title>
+<link rel="icon" type="image/png" href="logo.png">
+
+<meta name="description" content="Forsaken GameCenterはEVE OnlineのWinter Coalition所属コーポレーション。北部ヌルセク・ガリスタス宙域を拠点にPvE・防衛・艦隊戦を展開する組織です。">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+JP:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;}
+body{
+margin:0;
+font-family:"Noto Sans JP",sans-serif;
+background:black;
+color:#e6f0ff;
+overflow-x:hidden;
+}
+
+header{
+position:fixed;
+top:0;
+width:100%;
+z-index:10;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 40px;
+background:rgba(0,0,0,0.6);
+backdrop-filter:blur(10px);
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:15px;
+font-family:"Orbitron",sans-serif;
+font-size:20px;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+margin-left:25px;
+transition:.3s;
+}
+nav a:hover{
+color:#00eaff;
+text-shadow:0 0 10px #00eaff;
+}
+
+.hero{
+height:100vh;
+position:relative;
+overflow:hidden;
+}
+
+.hero video{
+position:absolute;
+width:100%;
+height:100%;
+object-fit:cover;
+z-index:-2;
+filter:brightness(0.4) contrast(1.1);
+}
+
+.hero::after{
+content:"";
+position:absolute;
+inset:0;
+background:rgba(0,0,0,0.45);
+z-index:-1;
+}
+
+.hero-text{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+text-align:center;
+font-family:"Orbitron",sans-serif;
+}
+
+.hero-text h1{
+font-size:80px;
+color:#ffffff;
+-webkit-text-stroke:1px #00ffff;
+text-shadow:
+0 0 5px  #00ffff,
+0 0 10px #00ffff,
+0 0 20px #00eaff,
+0 0 40px #00eaff;
+animation: neon-flicker 4s infinite;
+}
+
+@keyframes neon-flicker{
+0%,18%,22%,25%,53%,57%,100%{opacity:1;}
+20%,24%,55%{opacity:0.6;}
+}
+
+.hero-text p{
+font-weight:700;
+text-shadow:0 0 10px #00eaff;
+}
+
+section{
+padding:120px 40px;
+}
+
+.cards{
+display:flex;
+gap:30px;
+justify-content:center;
+flex-wrap:wrap;
+}
+
+.card{
+width:260px;
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(0,234,255,.3);
+border-radius:15px;
+padding:25px;
+transition:.3s;
+text-align:center;
+}
+.card:hover{
+transform:translateY(-10px);
+box-shadow:0 0 25px cyan;
+}
+
+.policy{
+display:flex;
+gap:40px;
+flex-wrap:wrap;
+justify-content:center;
+}
+
+.policy-box{
+width:420px;
+background:linear-gradient(145deg,#071726,#0a2238);
+padding:30px;
+border-radius:20px;
+border:1px solid cyan;
+transition:.3s;
+}
+.policy-box:hover{
+box-shadow:0 0 30px cyan;
+transform:translateY(-8px);
+}
+
+.mission{
+text-align:center;
+}
+
+.tax{
+font-size:50px;
+color:gold;
+text-align:center;
+}
+
+.culture{
+text-align:center;
+background:url("bg1.jpg") center/cover fixed;
+}
+
+.culture h2{
+font-family:"Orbitron",sans-serif;
+font-size:60px;
+letter-spacing:4px;
+color:#ffffff;
+text-shadow:
+0 0 10px #00ffff,
+0 0 20px #00eaff,
+0 0 40px #00eaff;
+margin-bottom:40px;
+}
+
+
+.culture-items{
+display:grid;
+grid-template-columns:repeat(2, 1fr);
+gap:80px 120px;
+margin-top:60px;
+justify-items:center;
+}
+
+
+
+.circle{
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:15px;
+cursor:pointer;
+transition:.3s;
+}
+
+.circle img{
+width:200px;
+transition:.4s;
+filter:drop-shadow(0 0 0 transparent);
+}
+
+.circle:hover img{
+filter:
+drop-shadow(0 0 10px gold)
+drop-shadow(0 0 20px gold)
+drop-shadow(0 0 40px gold);
+transform:scale(1.1);
+}
+
+.circle span{
+font-weight:bold;
+letter-spacing:2px;
+color:white;
+transition:.3s;
+}
+
+.circle:hover span{
+color:gold;
+}
+
+
+.flavor-text{
+margin-top:80px;
+min-height:90px;
+text-align:center;
+font-size:22px;
+color:gold;
+opacity:0;
+transition:.4s;
+text-shadow:
+0 0 10px gold,
+0 0 20px gold;
+letter-spacing:2px;
+max-width:700px;
+margin-left:auto;
+margin-right:auto;
+}
+
+
+
+.cta{
+text-align:center;
+}
+.cta a{
+display:inline-block;
+padding:15px 50px;
+background:#00eaff;
+color:black;
+border-radius:30px;
+text-decoration:none;
+font-weight:bold;
+transition:.3s;
+}
+.cta a:hover{
+background:gold;
+box-shadow:0 0 20px gold;
+}
+
+footer{
+text-align:center;
+padding:20px;
+color:#aaa;
+}
+
+.fade{
+opacity:0;
+transform:translateY(50px);
+transition:1s;
+}
+.fade.show{
+opacity:1;
+transform:none;
+}
+
+@media(max-width:768px){
+.hero-text h1{font-size:36px;}
+.policy-box{width:100%;}
+}
+#about,
+#mission {
+  text-align: center;
+}
+
+#mission p {
+  max-width: 800px;
+  margin: 0 auto 12px auto;
+}
+/* ===================== */
+/* 使命を荘厳演出 */
+/* ===================== */
+
+#mission {
+  background: linear-gradient(to bottom, #000814, #001d3d);
+  padding-top: 160px;
+  padding-bottom: 160px;
+}
+
+#mission h2 {
+  font-family: "Orbitron", sans-serif;
+  font-size: 56px;
+  letter-spacing: 6px;
+  margin-bottom: 60px;
+  color: #ffffff;
+  text-shadow:
+    0 0 10px #00ffff,
+    0 0 30px #00eaff,
+    0 0 60px #00eaff;
+}
+
+#mission p {
+  font-size: 20px;
+  line-height: 2.1;
+  letter-spacing: 2px;
+  font-weight: 500;
+  max-width: 900px;
+  margin: 0 auto 18px auto;
+  text-shadow: 0 0 10px rgba(0,234,255,0.5);
+}
+#mission .final-line {
+  font-size: 24px;
+  font-weight: 700;
+  color: gold;
+  text-shadow:
+    0 0 10px gold,
+    0 0 30px gold;
+  margin-top: 40px;
+}
+
+#policy h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: gold;
+  letter-spacing: 2px;
+}
+
+#policy p {
+  line-height: 1.9;
+}
+/* ===================== */
+/* 方針 見出しネオン */
+/* ===================== */
+
+#policy h3 {
+  font-size: 22px;
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+  color: #ffffff;
+  text-shadow:
+    0 0 8px #00ffff,
+    0 0 16px #00eaff,
+    0 0 32px #00eaff;
+}
+
+/* ===================== */
+/* 方針 1柱ずつ浮かび上がる */
+/* ===================== */
+
+.policy-fade {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: 
+    opacity 1.2s ease,
+    transform 1.2s ease;
+}
+
+.policy-fade.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.policy-fade.show h3 {
+  animation: neonPulse 1.5s ease-out;
+}
+
+@keyframes neonPulse {
+  0% { text-shadow: 0 0 0 #00ffff; }
+  100% {
+    text-shadow:
+      0 0 8px #00ffff,
+      0 0 16px #00eaff,
+      0 0 32px #00eaff;
+  }
+}
+/* ===================== */
+/* 方針 見出し 強ネオン化 */
+/* ===================== */
+
+#policy h3 {
+  font-family: "Orbitron", sans-serif;
+  font-size: 24px;
+  letter-spacing: 4px;
+  margin-bottom: 25px;
+  color: #ffffff;
+  position: relative;
+  display: inline-block;
+  text-shadow:
+    0 0 5px #00ffff,
+    0 0 15px #00eaff,
+    0 0 30px #00eaff,
+    0 0 60px #00eaff;
+  animation: policyGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes policyGlow {
+  from {
+    text-shadow:
+      0 0 5px #00ffff,
+      0 0 15px #00eaff,
+      0 0 30px #00eaff;
+  }
+  to {
+    text-shadow:
+      0 0 10px #00ffff,
+      0 0 25px #00eaff,
+      0 0 50px #00eaff,
+      0 0 80px #00eaff;
+  }
+}
+/* ===================== */
+/* 方針 締め文 荘厳演出 */
+/* ===================== */
+
+.policy-closing {
+  margin-top: 120px;
+  padding: 80px 40px;
+  text-align: center;
+  background: linear-gradient(to bottom, transparent, #001d3d);
+}
+
+.policy-closing-text {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: gold;
+  max-width: 900px;
+  margin: 0 auto;
+  line-height: 2.2;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: 1.5s ease;
+  text-shadow:
+    0 0 10px gold,
+    0 0 30px gold,
+    0 0 60px gold;
+}
+
+.policy-closing-text.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* ===================== */
+/* 概要・方針 巨大ネオン見出し */
+/* ===================== */
+
+.section-neon-title {
+  font-family: "Orbitron", sans-serif;
+  font-size: 96px;
+  letter-spacing: 10px;
+  text-align: center;
+  margin-bottom: 100px;
+
+  color: #ffffff;
+  -webkit-text-stroke: 1.5px #00ffff;
+
+  text-shadow:
+    0 0 10px #00ffff,
+    0 0 30px #00eaff,
+    0 0 60px #00eaff,
+    0 0 120px #00eaff;
+
+  animation: neonTitleFlicker 5s infinite;
+}
+
+@keyframes neonTitleFlicker {
+  0%, 19%, 22%, 25%, 53%, 57%, 100% {
+    opacity: 1;
+  }
+  20%, 24%, 55% {
+    opacity: 0.65;
+  }
+}
+
+/* モバイル調整 */
+@media(max-width:768px){
+  .section-neon-title{
+    font-size:48px;
+    letter-spacing:4px;
+    margin-bottom:60px;
+  }
+}
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:-10;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-family: "Orbitron", sans-serif;
+  font-size: 20px;
+}
+
+.logo-img {
+  height: 40px;
+  width: auto;
+  transition: 0.3s ease;
+  filter: drop-shadow(0 0 0 transparent);
+}
+
+.logo-img:hover {
+  filter:
+    drop-shadow(0 0 5px #00ffff)
+    drop-shadow(0 0 15px #00eaff)
+    drop-shadow(0 0 30px #00eaff);
+  transform: scale(1.1);
+}
+
+/* ← ちゃんと閉じる */
+
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:-10;
+}
+
+.logo-img {
+  animation: logoGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes logoGlow {
+  from { filter: drop-shadow(0 0 5px #00ffff); }
+  to   { filter: drop-shadow(0 0 25px #00eaff); }
+}
+/* ===================== */
+/* 全セクション見出し 統一・巨大化 */
+/* ===================== */
+
+.section-neon-title,
+#culture h2,
+#mission h2 {
+  font-family: "Orbitron", sans-serif;
+  font-size: 110px;              /* ← 巨大化 */
+  letter-spacing: 8px;
+  text-align: center;
+  margin-bottom: 100px;
+
+  color: #ffffff;
+
+  text-shadow:
+    0 0 15px #00ffff,
+    0 0 40px #00eaff,
+    0 0 80px #00eaff;
+
+  animation: titleGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+  from {
+    text-shadow:
+      0 0 10px #00ffff,
+      0 0 30px #00eaff,
+      0 0 60px #00eaff;
+  }
+  to {
+    text-shadow:
+      0 0 20px #00ffff,
+      0 0 60px #00eaff,
+      0 0 120px #00eaff;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">
+  <img src="logo.png" alt="Forsaken Logo" class="logo-img">
+  <span>Forsaken GameCenter</span>
+</div>
+<nav>
+<a href="#about">概要</a>
+<a href="#policy">方針</a>
+<a href="#culture">文化</a>
+<a href="#mission">使命</a>
+</nav>
+</header>
+
+<section class="hero">
+<video autoplay muted loop playsinline>
+<source src="burnjita.mp4" type="video/mp4">
+</video>
+<div class="hero-text">
+<h1>Forsaken GameCenter</h1>
+<p>Winter Coalition/Solyaris Chtonium</p>
+</div>
+</section>
+
+<section id="about" class="fade">
+  <h2 class="section-neon-title">概要</h2>
+  <div class="cards">
+<div class="cards">
+<div class="card"><h3>Alliance</h3><p>Winter Coalition/	Solyaris Chtonium 所属</p></div>
+<div class="card"><h3>Territory</h3><p>北部ヌルセク・ガリスタス宙域</p></div>
+<div class="card"><h3>Tax</h3><p>税率0%</p><p>（アライアンス要求最低税率のみ適用）</p></div>
+<div class="card"><h3>Activity</h3><p>PvE / 採掘 / 防衛 / 艦隊戦</p></div>
+<div class="card"><h3>Philosophy</h3><p>自律,防衛,協調,自由</p></div>
+</div>
+</section>
+
+<section id="policy" class="fade">
+  <h2 class="section-neon-title">方針</h2>
+
+  <div class="policy">
+
+    <div class="policy-box policy-fade">
+      <h3>メンバーに最低限の負担を求めること</h3>
+      <p>
+        各自のリアル事情を尊重し、無理な参加や過度な義務は課しません。
+        参加はあくまで自発的であり、快適かつ長期的に活動できる環境を維持します。
+      </p>
+    </div>
+
+    <div class="policy-box policy-fade">
+      <h3>ヌルセク活動にこだわること</h3>
+      <p>
+        北部ヌルセク宙域を拠点とし、戦略的な防衛・迎撃・艦隊行動を通じて、
+        宙域の安定と安全を確保することを重視しております。
+        活動は単なる戦闘参加にとどまらず、戦略的判断と連携を伴う行動を重視します。
+      </p>
+    </div>
+
+     <div class="policy-box policy-fade">
+     <h3>拡大を目指すこと</h3>
+      <p>
+        組織としての影響力を高め、同盟内外での存在感を確立することを目標としております。
+        新規メンバーの受け入れや活動範囲の拡大を通じて、
+        持続可能で強固な組織づくりを進めてまいります。
+      </p>
+    </div>
+
+  </div>
+
+  <div class="policy-closing">
+  <p class="policy-closing-text">
+    これら3つの方針を柱として、我々は
+    「出られるときに出る」「守るべきときに守る」という基本姿勢のもと、
+    安定的かつ戦略的に活動してまいります。
+  </p>
+</div>
+
+</section>
+
+<section id="culture" class="culture fade">
+<h2 class="section-neon-title">文化</h2>
+
+<div class="culture-items">
+
+  <div class="circle" data-text="各メンバーが自ら判断し、最適な行動を選択します。">
+    <img src="autonomy.png" alt="自律">
+    <span>自律</span>
+  </div>
+
+  <div class="circle" data-text="仲間と領域を守ることを最優先します。">
+    <img src="defense.png" alt="防衛">
+    <span>防衛</span>
+  </div>
+
+  <div class="circle" data-text="艦隊として連携し成果を出します。">
+    <img src="teamwork.png" alt="協調">
+    <span>協調</span>
+  </div>
+
+  <div class="circle" data-text="強制されない自由な活動を尊重します。">
+    <img src="freedom.png" alt="自由">
+    <span>自由</span>
+  </div>
+
+</div>  <!-- ← ここを追加するのが超重要 -->
+
+<p id="flavor" class="flavor-text">
+  ここに理念が表示されます
+</p>
+
+</section>
+
+
+<section id="mission" class="fade">
+<h2 class="section-neon-title">使命</h2>
+<p>領域を守り、敵を排し、味方の活動空間を確保し続ける。</p>
+<p>失敗を責める前に、次の一手を考える。</p>
+<p>宇宙は、私たちを待ってはくれません。</p>
+<p>考え続けるだけの方は、常に後手に回ることになります。</p>
+<p>行動し続ける者だけが、宙域を変え、戦局を動かし、歴史を刻むことができるのです。</p>
+<p></p>
+<p>ドックに留まることは、安全ではあります。</p>
+<p class="final-line">しかし、私たちの居場所は、そこではありません。</p>
+
+</section>
+
+<section class="cta fade">
+<h2>Join Us</h2>
+<a href="https://discord.gg/2mb8EFYYFu">Discordに参加</a>
+</section>
+
+<footer>
+© Forsaken GameCenter
+</footer>
+
+<script>
+const fades=document.querySelectorAll(".fade");
+const observer=new IntersectionObserver(entries=>{
+entries.forEach(e=>{
+if(e.isIntersecting){e.target.classList.add("show");}
+});
+});
+fades.forEach(el=>observer.observe(el));
+
+const circles=document.querySelectorAll(".circle");
+const flavor=document.getElementById("flavor");
+
+circles.forEach(circle=>{
+circle.addEventListener("mouseenter",()=>{
+flavor.textContent=circle.dataset.text;
+flavor.style.opacity=1;
+});
+circle.addEventListener("mouseleave",()=>{
+flavor.style.opacity=0;
+});
+});
+/* 方針セクション 1柱ずつフェードイン */
+const policyItems = document.querySelectorAll(".policy-fade");
+
+const policyObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("show");
+      policyObserver.unobserve(entry.target);
+    }
+  });
+}, {
+  threshold: 0.3
+});
+
+policyItems.forEach(item => {
+  policyObserver.observe(item);
+});
+/* 方針 締め文フェードイン */
+const policyClosing = document.querySelector(".policy-closing-text");
+
+const closingObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      policyClosing.classList.add("show");
+      closingObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.4 });
+
+closingObserver.observe(policyClosing);
+const canvas = document.getElementById("starfield");
+const ctx = canvas.getContext("2d");
+
+let stars = [];
+let w, h;
+
+function resize(){
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resize);
+resize();
+
+/* 星を生成 */
+for(let i = 0; i < 300; i++){
+  stars.push({
+    x: Math.random() * w,
+    y: Math.random() * h,
+    speed: Math.random() * 2 + 0.5
+  });
+}
+
+function animate(){
+  ctx.clearRect(0, 0, w, h);
+
+  ctx.fillStyle = "white";
+  stars.forEach(star => {
+    star.y += star.speed;
+
+    if(star.y > h){
+      star.y = 0;
+      star.x = Math.random() * w;
+    }
+
+    ctx.fillRect(star.x, star.y, 2, 2);
+  });
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+</script>
+
+</body>
+</html>
