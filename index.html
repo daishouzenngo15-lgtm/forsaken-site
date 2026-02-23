@@ -770,58 +770,63 @@ const closingObserver = new IntersectionObserver(entries => {
 }, { threshold: 0.4 });
 
 closingObserver.observe(policyClosing);
-/* =====================
-   軽量・積もる星
-===================== */
+/* ==========================
+   Ultra Light Space Dust
+========================== */
 
 const canvas = document.getElementById("starfield");
 const ctx = canvas.getContext("2d");
 
 let w, h;
-let stars = [];
-let snowHeight = [];
+let particles = [];
+let dustLevel = 0;
 
 function resize(){
   w = canvas.width = window.innerWidth;
   h = canvas.height = window.innerHeight;
-  snowHeight = new Array(w).fill(0);
 }
 window.addEventListener("resize", resize);
 resize();
 
-/* 星生成 */
-for(let i = 0; i < 150; i++){
-  stars.push({
+/* 粒子生成（少なめ） */
+for(let i = 0; i < 80; i++){
+  particles.push({
     x: Math.random() * w,
     y: Math.random() * h,
-    speed: Math.random() * 1.5 + 0.5
+    speed: Math.random() * 0.7 + 0.3,
+    size: Math.random() * 2 + 1
   });
+}
+
+function drawDustLayer(){
+  const gradient = ctx.createLinearGradient(0, h - dustLevel, 0, h);
+  gradient.addColorStop(0, "rgba(180,180,255,0.05)");
+  gradient.addColorStop(1, "rgba(120,120,255,0.25)");
+
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, h - dustLevel, w, dustLevel);
 }
 
 function animate(){
   ctx.clearRect(0, 0, w, h);
-  ctx.fillStyle = "white";
 
-  stars.forEach(star => {
-    star.y += star.speed;
+  ctx.fillStyle = "rgba(200,200,255,0.8)";
 
-    const x = Math.floor(star.x);
+  particles.forEach(p => {
+    p.y += p.speed;
 
-    if(star.y >= h - snowHeight[x] - 2){
-      snowHeight[x] += 2;
-
-      star.y = 0;
-      star.x = Math.random() * w;
+    if(p.y > h - dustLevel){
+      dustLevel += 0.02;  // ゆっくり堆積
+      p.y = 0;
+      p.x = Math.random() * w;
     }
 
-    ctx.fillRect(star.x, star.y, 2, 2);
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fill();
   });
 
-  for(let x = 0; x < w; x++){
-    if(snowHeight[x] > 0){
-      ctx.fillRect(x, h - snowHeight[x], 1, snowHeight[x]);
-    }
-  }
+  drawDustLayer();
 
   requestAnimationFrame(animate);
 }
@@ -832,6 +837,7 @@ animate();
 
 </body>
 </html>
+
 
 
 
