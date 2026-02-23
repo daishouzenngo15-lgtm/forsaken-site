@@ -770,51 +770,27 @@ const closingObserver = new IntersectionObserver(entries => {
 }, { threshold: 0.4 });
 
 closingObserver.observe(policyClosing);
+/* =====================
+   軽量・積もる星
+===================== */
+
 const canvas = document.getElementById("starfield");
 const ctx = canvas.getContext("2d");
 
-let stars = [];
 let w, h;
+let stars = [];
+let snowHeight = [];
 
 function resize(){
   w = canvas.width = window.innerWidth;
   h = canvas.height = window.innerHeight;
-}
-window.addEventListener("resize", resize);
-resize();
-
-/* 星を生成 */
-for(let i = 0; i < 300; i++){
-  stars.push({
-    x: Math.random() * w,
-    y: Math.random() * h,
-    speed: Math.random() * 2 + 0.5
-  });
-}
-
-function animate(){
-  ctx.clearRect(0, 0, w, h);
-
-  ctx.fillStyle = "white";
-  stars.forEach(star => {
-    star.y += star.speed;
-
-   const canvas = document.getElementById("starfield");
-const ctx = canvas.getContext("2d");
-
-let stars = [];
-let snow = [];   // 積もった星
-let w, h;
-
-function resize(){
-  w = canvas.width = window.innerWidth;
-  h = canvas.height = window.innerHeight;
+  snowHeight = new Array(w).fill(0);
 }
 window.addEventListener("resize", resize);
 resize();
 
 /* 星生成 */
-for(let i = 0; i < 200; i++){
+for(let i = 0; i < 150; i++){
   stars.push({
     x: Math.random() * w,
     y: Math.random() * h,
@@ -824,18 +800,16 @@ for(let i = 0; i < 200; i++){
 
 function animate(){
   ctx.clearRect(0, 0, w, h);
-
   ctx.fillStyle = "white";
 
-  // 落下中の星
   stars.forEach(star => {
     star.y += star.speed;
 
-    // 地面 or 積雪に接触したら止める
-    let groundHeight = getSnowHeight(star.x);
+    const x = Math.floor(star.x);
 
-    if(star.y > h - groundHeight - 2){
-      snow.push({x: star.x, y: h - groundHeight - 2});
+    if(star.y >= h - snowHeight[x] - 2){
+      snowHeight[x] += 2;
+
       star.y = 0;
       star.x = Math.random() * w;
     }
@@ -843,37 +817,20 @@ function animate(){
     ctx.fillRect(star.x, star.y, 2, 2);
   });
 
-  // 積もった星を描画
-  snow.forEach(s => {
-    ctx.fillRect(s.x, s.y, 2, 2);
-  });
-
-  requestAnimationFrame(animate);
-}
-
-function getSnowHeight(x){
-  let height = 0;
-  snow.forEach(s => {
-    if(Math.abs(s.x - x) < 2){
-      height += 2;
+  for(let x = 0; x < w; x++){
+    if(snowHeight[x] > 0){
+      ctx.fillRect(x, h - snowHeight[x], 1, snowHeight[x]);
     }
-  });
-  return height;
-}
-
-animate();
-
-    ctx.fillRect(star.x, star.y, 2, 2);
-  });
+  }
 
   requestAnimationFrame(animate);
 }
 
 animate();
-
 </script>
 
 </body>
 </html>
+
 
 
