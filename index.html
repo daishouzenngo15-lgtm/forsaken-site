@@ -799,10 +799,69 @@ function animate(){
   stars.forEach(star => {
     star.y += star.speed;
 
-    if(star.y > h){
+   const canvas = document.getElementById("starfield");
+const ctx = canvas.getContext("2d");
+
+let stars = [];
+let snow = [];   // 積もった星
+let w, h;
+
+function resize(){
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resize);
+resize();
+
+/* 星生成 */
+for(let i = 0; i < 200; i++){
+  stars.push({
+    x: Math.random() * w,
+    y: Math.random() * h,
+    speed: Math.random() * 1.5 + 0.5
+  });
+}
+
+function animate(){
+  ctx.clearRect(0, 0, w, h);
+
+  ctx.fillStyle = "white";
+
+  // 落下中の星
+  stars.forEach(star => {
+    star.y += star.speed;
+
+    // 地面 or 積雪に接触したら止める
+    let groundHeight = getSnowHeight(star.x);
+
+    if(star.y > h - groundHeight - 2){
+      snow.push({x: star.x, y: h - groundHeight - 2});
       star.y = 0;
       star.x = Math.random() * w;
     }
+
+    ctx.fillRect(star.x, star.y, 2, 2);
+  });
+
+  // 積もった星を描画
+  snow.forEach(s => {
+    ctx.fillRect(s.x, s.y, 2, 2);
+  });
+
+  requestAnimationFrame(animate);
+}
+
+function getSnowHeight(x){
+  let height = 0;
+  snow.forEach(s => {
+    if(Math.abs(s.x - x) < 2){
+      height += 2;
+    }
+  });
+  return height;
+}
+
+animate();
 
     ctx.fillRect(star.x, star.y, 2, 2);
   });
@@ -816,4 +875,5 @@ animate();
 
 </body>
 </html>
+
 
